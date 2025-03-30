@@ -29,31 +29,86 @@ This project generates photorealistic, high-resolution images by combining produ
 - Python 3.8 or higher
 - A valid Google Gemini API key
 
-## Installation
+// ...existing code until Installation section...
 
-1. Clone the repository
-2. Install dependencies:
+## Installation and Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/image_generation.git
+cd image_generation
+```
+
+2. Create and activate a virtual environment (recommended):
+```bash
+python -m venv venv
+source venv/bin/activate  # On Linux/Mac
+```
+
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
-3. Copy `.env.example` to `.env` and add your Google Gemini API key:
+
+4. Set up environment variables:
+```bash
+cp .env.example .env
+```
+
+5. Edit the `.env` file and add your Google Gemini API key:
 ```
 GOOGLE_GEMENI_API=your_api_key_here
 ```
 
+6. Create required directories:
+```bash
+mkdir -p assets/{products,models,background} out
+```
+
 ## Usage
 
-1. Place your images in the appropriate directories under `assets/`:
-   - Product images in `assets/products/`
-   - Model images in `assets/models/` 
-   - Background images in `assets/background/`
+1. Prepare your images:
+   - Place product images (JPG/PNG) in `assets/products/`
+   - Place model images (JPG/PNG) in `assets/models/`
+   - Place background images (JPG/PNG) in `assets/background/`
 
-2. Run the main script:
+2. Ensure image requirements:
+   - Recommended resolution: 1024x1024 pixels or higher
+   - File formats: JPG or PNG
+   - Clear, well-lit images for better results
+
+3. Run the image generation:
 ```bash
 python main.py
 ```
 
-3. Generated images will be saved in the `out/` directory
+4. Check generated outputs:
+   - Generated images will be saved in the `out/` directory
+   - Each run creates a timestamped subfolder
+   - JSON files with image descriptions are saved alongside the images
+
+## Troubleshooting
+
+Common issues and solutions:
+
+1. API Key errors:
+```bash
+# Verify your API key is set correctly
+echo $GOOGLE_GEMENI_API
+# If empty, reload environment variables
+source .env
+```
+
+2. Missing directories:
+```bash
+# Create any missing directories
+mkdir -p assets/{products,models,background} out
+```
+
+3. Image processing errors:
+   - Ensure images are in JPG/PNG format
+   - Check image permissions: `chmod 644 assets/**/*`
+   - Verify image files are not corrupted
 
 ## How It Works
 
@@ -67,23 +122,3 @@ python main.py
    - `generate_description_from_image()`: Extracts descriptions from images
    - `generate_image_prompt()`: Creates prompts for image generation
    - `extract_json_from_response()`: Parses API responses
-
-## Dependencies
-
-Main dependencies from [`requirements.txt`](requirements.txt):
-- Pillow: Image processing
-- google-generativeai: Google Gemini API client
-- python-dotenv: Environment variable management
-- pydantic-ai: AI model integration
-
-## License
-
-This project is open source and available under the MIT License.
-
-## Notes
-
-- Ensure input images are high quality for best results
-- Currently processes one product, model, and multiple backgrounds in sequence
-- Generated images maintain product accuracy while creating realistic fashion advertisements
-
-Feel free to contribute to this project by submitting issues or pull requests.
